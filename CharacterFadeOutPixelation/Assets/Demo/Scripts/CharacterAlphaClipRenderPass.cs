@@ -7,29 +7,19 @@ using UnityEngine.Rendering.RenderGraphModule.Util;
 using UnityEngine.Rendering.Universal;
 using static UnityEngine.Rendering.RenderGraphModule.Util.RenderGraphUtils;
 
-public class CharacterFadeOutPixelationRenderPass : ScriptableRenderPass
+public class CharacterAlphaClipRenderPass : ScriptableRenderPass
 {
-    private Material alphaBlendMat;
-    private Material maskMat;
-    private Material pixelationMat;
+    private Material alphaClipMat;
 
     class AlphaBlendPassData
     {
         public RendererListHandle rendererListHandle;
     }
 
-    class MaskPassData
-    {
-        public Material material;
-        public TextureHandle sourceTex;
-        public TextureHandle maskTex;
-    }
 
-    public CharacterFadeOutPixelationRenderPass(Material alphaBlendMaterial, Material maskMaterial, Material pixelationMaterial)
+    public CharacterAlphaClipRenderPass(Material alphaClipMaterial)
     {
-        alphaBlendMat = alphaBlendMaterial;
-        maskMat = maskMaterial;
-        pixelationMat = pixelationMaterial;
+        alphaClipMat = alphaClipMaterial;
     }
 
     public override void RecordRenderGraph(RenderGraph renderGraph, ContextContainer frameData)
@@ -40,7 +30,7 @@ public class CharacterFadeOutPixelationRenderPass : ScriptableRenderPass
 
         TextureHandle activeColorTexture = resourceData.activeColorTexture;
 
-        // AlphaBlend
+        // Alpha Clip
         RenderTextureDescriptor descriptor = cameraData.cameraTargetDescriptor;
         descriptor.depthBufferBits = 0;
         descriptor.graphicsFormat = GraphicsFormat.R8G8B8A8_UNorm;
@@ -74,45 +64,8 @@ public class CharacterFadeOutPixelationRenderPass : ScriptableRenderPass
             });
         }
 
-        BlitMaterialParameters blitParams = new BlitMaterialParameters(playerRT, activeColorTexture, alphaBlendMat, 0);
-        renderGraph.AddBlitPass(blitParams, "Blend PlayerRT To CameraColor");
+        BlitMaterialParameters blitParams = new BlitMaterialParameters(playerRT, activeColorTexture, alphaClipMat, 0);
+        renderGraph.AddBlitPass(blitParams, "Character Alpha Clip");
         resourceData.cameraColor = activeColorTexture;
-
-        // Mask
-        TextureHandle playerMaskRT = renderGraph.CreateTexture(new TextureDesc(descriptor)
-        {
-            name = "PlayerMaskRT",
-            clearBuffer = true,
-            clearColor = Color.black,
-        });
-        blitParams = new BlitMaterialParameters(playerRT, playerMaskRT, maskMat, 0);
-        renderGraph.AddBlitPass(blitParams, "Blend PlayerRT To MaskRT");
-
-        // Pixelation
-        TextureHandle playerPixelationRT = renderGraph.CreateTexture(new TextureDesc(descriptor)
-        {
-            name = "PlayerPixelationRT",
-            clearBuffer = true
-        });
-
-        using (var builder = renderGraph.AddRasterRenderPass<MaskPassData>("Player Pixelation", out var passData))
-        {
-            passData.material = pixelationMat;
-            passData.sourceTex = resourceData.cameraColor;
-            passData.maskTex = playerMaskRT;
-
-            builder.UseTexture(playerMaskRT, AccessFlags.Read);
-            builder.UseTexture(resourceData.cameraColor, AccessFlags.Read);
-            builder.SetRenderAttachment(playerPixelationRT, 0);
-            builder.AllowGlobalStateModification(true);
-
-            builder.SetRenderFunc((MaskPassData data, RasterGraphContext context) =>
-            {
-                data.material.SetTexture("_MaskTex", data.maskTex);
-                Blitter.BlitTexture(context.cmd, data.sourceTex, new Vector4(1, 1, 0, 0), data.material, 0);
-            });
-        }
-
-        resourceData.cameraColor = playerPixelationRT;
     }
 }

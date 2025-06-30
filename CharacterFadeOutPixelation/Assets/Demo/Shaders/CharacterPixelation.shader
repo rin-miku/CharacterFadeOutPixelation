@@ -3,15 +3,12 @@ Shader "Custom/CharacterPixelation"
     Properties
     {
         _MaskTex ("Mask", 2D) = "white" {}
-        _GridTex ("Grid Pattern", 2D) = "white" {}
-        _GridTiling ("Grid Tiling", Vector) = (256,256,0,0)
-        _AlphaClipThreshold ("Alpha Clip Threshold", Range(0, 1)) = 0.5
-        _ObstructionIntensity ("Obstruction Intensity", Float) = 12
+        _PixelSize ("Pixel Size", Range(1, 10)) = 1.0
     }
    SubShader
    {
-        Tags { "RenderType"="Transparent" "Queue"="Transparent" "RenderPipeline"="UniversalPipeline" }
-        Blend SrcAlpha OneMinusSrcAlpha
+       Blend SrcAlpha OneMinusSrcAlpha
+       Tags { "RenderType"="Opaque" "RenderPipeline" = "UniversalPipeline"}
        ZWrite Off Cull Off
        Pass
        {
@@ -26,11 +23,7 @@ Shader "Custom/CharacterPixelation"
 
            TEXTURE2D(_MaskTex);
            SAMPLER(sampler_MaskTex);
-           TEXTURE2D(_GridTex);
-           SAMPLER(sampler_GridTex);
-           float4 _GridTiling;
-           float _AlphaClipThreshold;
-           float _ObstructionIntensity;
+           float _PixelSize;
  
            float4 Frag(Varyings input) : SV_Target0
            {
@@ -38,20 +31,21 @@ Shader "Custom/CharacterPixelation"
 
                float2 uv = input.texcoord.xy;
                half4 originalColor = SAMPLE_TEXTURE2D_X_LOD(_BlitTexture, sampler_LinearRepeat, uv, _BlitMipLevel);
-
+               
                float mask = SAMPLE_TEXTURE2D(_MaskTex, sampler_MaskTex, uv).r;
                if (mask < 0.5) return originalColor;
 
-               float2 screenUV;
-               screenUV.x = uv.x * 1920 / _GridTiling.x;
-               screenUV.y = uv.y * 1080 / _GridTiling.y;
-               float grid = SAMPLE_TEXTURE2D(_GridTex, sampler_GridTex, screenUV).a;
-                
-               float alpha = saturate(grid * _ObstructionIntensity);
-                
-               clip(alpha - _AlphaClipThreshold);
-                
-               return originalColor;
+               float2 screenSize = _ScreenParams.xy;
+
+               float2 screenUV = uv * screenSize;
+
+               screenUV = floor(screenUV / _PixelSize) * _PixelSize;
+
+               float2 pixelUV = screenUV / screenSize;
+
+               float4 color = SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearRepeat, pixelUV);
+
+               return color;
            }
            ENDHLSL
        }
