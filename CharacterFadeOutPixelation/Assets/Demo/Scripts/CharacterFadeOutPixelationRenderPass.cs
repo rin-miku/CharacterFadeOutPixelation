@@ -74,10 +74,11 @@ public class CharacterFadeOutPixelationRenderPass : ScriptableRenderPass
             });
         }
 
-        BlitMaterialParameters blitParams = new BlitMaterialParameters(playerRT, activeColorTexture, alphaBlendMat, 0);
+        BlitMaterialParameters blitParams = new BlitMaterialParameters(playerRT, activeColorTexture, pixelationMat, 0);
         renderGraph.AddBlitPass(blitParams, "Blend PlayerRT To CameraColor");
         resourceData.cameraColor = activeColorTexture;
 
+        /*
         // Mask
         TextureHandle playerMaskRT = renderGraph.CreateTexture(new TextureDesc(descriptor)
         {
@@ -114,5 +115,6 @@ public class CharacterFadeOutPixelationRenderPass : ScriptableRenderPass
         }
 
         resourceData.cameraColor = playerPixelationRT;
+        */
     }
 }
