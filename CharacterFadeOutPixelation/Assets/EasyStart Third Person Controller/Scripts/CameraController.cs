@@ -13,7 +13,7 @@ using UnityEngine;
 /// </summary>
 public class CameraController : MonoBehaviour
 {
-
+    public Transform target;
     [Tooltip("Enable to move the camera by holding the right mouse button. Does not work with joysticks.")]
     public bool clickToMoveCamera = false;
     [Tooltip("Enable zoom in/out when scrolling the mouse wheel. Does not work with joysticks.")]
@@ -28,6 +28,7 @@ public class CameraController : MonoBehaviour
     [Header("Materials")]
     public Material playerBlendMat;
     public Material playerPixelationMat;
+    public Material playerAlphaClipMat;
 
     float mouseX;
     float mouseY;
@@ -38,7 +39,7 @@ public class CameraController : MonoBehaviour
     void Start()
     {
 
-        player = GameObject.FindWithTag("Player").transform;
+        player = target;
         offsetDistanceY = transform.position.y;
 
         // Lock and hide cursor with option isn't checked
@@ -48,6 +49,7 @@ public class CameraController : MonoBehaviour
             UnityEngine.Cursor.visible = false;
         }
 
+        playerAlphaClipMat.SetFloat("_AlphaClipThreshold", 0);
     }
 
 
@@ -76,9 +78,12 @@ public class CameraController : MonoBehaviour
         transform.rotation = Quaternion.Euler(-mouseY, mouseX, 0);
 
         // Apply FadeOut and Piexlation
-        float alpha = Mathf.Clamp01((cameraLimit.y - mouseY) / (cameraLimit.y - 40f)) + 0.1f;
+        float alpha = Mathf.Clamp01((cameraLimit.y - mouseY) / (cameraLimit.y - 40f)) + 0.2f;
         playerBlendMat.SetFloat("_Alpha", Mathf.Clamp01(alpha));
         float pixelSize = 1 - Mathf.Clamp01((cameraLimit.y - mouseY) / (cameraLimit.y - 40f));
         playerPixelationMat.SetFloat("_PixelSize", pixelSize * 10f + 1f);
+
+        // Alpha Clip
+        playerAlphaClipMat?.SetFloat("_AlphaClipThreshold", 1f - alpha);
     }
 }

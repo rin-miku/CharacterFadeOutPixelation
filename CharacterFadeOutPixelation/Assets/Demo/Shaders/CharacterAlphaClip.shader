@@ -3,7 +3,7 @@ Shader "Custom/CharacterAlphaClip"
     Properties
     {
         _GridTex ("Grid Pattern", 2D) = "white" {}
-        _GridTiling ("Grid Tiling", Vector) = (256,256,0,0)
+        _GridPixelSize ("Grid Pixel Size", Float) = 64
         _AlphaClipThreshold ("Alpha Clip Threshold", Range(0, 1)) = 0.5
         _ObstructionIntensity ("Obstruction Intensity", Float) = 12
     }
@@ -12,8 +12,7 @@ Shader "Custom/CharacterAlphaClip"
        Tags { "RenderType"="Transparent" "Queue"="Transparent" "RenderPipeline"="UniversalPipeline" }
        Blend SrcAlpha OneMinusSrcAlpha
        Cull Off 
-       ZWrite On 
-       ZTest LEqual
+       ZWrite Off
        Pass
        {
            Name "CharacterAlphaClip"
@@ -27,7 +26,7 @@ Shader "Custom/CharacterAlphaClip"
 
            TEXTURE2D(_GridTex);
            SAMPLER(sampler_GridTex);
-           float4 _GridTiling;
+           float _GridPixelSize;
            float _AlphaClipThreshold;
            float _ObstructionIntensity;
  
@@ -39,12 +38,12 @@ Shader "Custom/CharacterAlphaClip"
 
                half4 color = SAMPLE_TEXTURE2D_X_LOD(_BlitTexture, sampler_LinearRepeat, uv, _BlitMipLevel);
 
-               float2 screenUV = uv * _ScreenParams.xy / _GridTiling.xy;
+               float2 screenUV = uv * _ScreenParams.xy / _GridPixelSize;
 
                float grid = SAMPLE_TEXTURE2D(_GridTex, sampler_GridTex, screenUV).a;
                 
                float alpha = saturate(grid * _ObstructionIntensity);
-                
+               
                clip(alpha - _AlphaClipThreshold);
 
                return color;
