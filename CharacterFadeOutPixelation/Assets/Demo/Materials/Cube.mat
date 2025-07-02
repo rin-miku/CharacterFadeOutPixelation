@@ -81,8 +81,16 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_05f3750dec8c4941803658120428d521_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: b52be1532fc22164ca9495bb79b2ccfb, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _SampleTexture2D_78a02d26ed4044c698ce8ddd55781584_Texture_1_Texture2D:
         m_Texture: {fileID: 2800000, guid: b52be1532fc22164ca9495bb79b2ccfb, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_9e66d5d0d0b1420584695ae16134d6c5_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: b1ea5e118d314f84fb721eaf0a842456, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
@@ -105,7 +113,7 @@ Material:
     m_Floats:
     - _AddPrecomputedVelocity: 0
     - _AlphaClip: 0
-    - _AlphaClipThreshold: 0.138
+    - _AlphaClipThreshold: -0.093750715
     - _AlphaToMask: 0
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
@@ -122,9 +130,10 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _GridPixelSize: 64
+    - _GridAlphaIntensity: 13.09
+    - _GridPixelSize: 18.9
     - _Metallic: 0
-    - _ObstructionIntensity: 2
+    - _ObstructionIntensity: 8
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _QueueControl: 0
@@ -144,6 +153,6 @@ Material:
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _GridTiling: {r: 4, g: 4, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _Till: {r: 2, g: 2, b: 0, a: 0}
+    - _Till: {r: 64, g: 64, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

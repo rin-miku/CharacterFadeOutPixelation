@@ -4,8 +4,9 @@ Shader "Custom/CharacterAlphaClip"
     {
         _GridTex ("Grid Pattern", 2D) = "white" {}
         _GridPixelSize ("Grid Pixel Size", Float) = 64
+        _GridAlphaIntensity ("Grid Alpha Intensity", Float) = 12
         _AlphaClipThreshold ("Alpha Clip Threshold", Range(0, 1)) = 0.5
-        _ObstructionIntensity ("Obstruction Intensity", Float) = 12
+
     }
    SubShader
    {
@@ -27,8 +28,8 @@ Shader "Custom/CharacterAlphaClip"
            TEXTURE2D(_GridTex);
            SAMPLER(sampler_GridTex);
            float _GridPixelSize;
+           float _GridAlphaIntensity;
            float _AlphaClipThreshold;
-           float _ObstructionIntensity;
  
            float4 Frag(Varyings input) : SV_Target0
            {
@@ -42,7 +43,7 @@ Shader "Custom/CharacterAlphaClip"
 
                float grid = SAMPLE_TEXTURE2D(_GridTex, sampler_GridTex, screenUV).a;
                 
-               float alpha = saturate(grid * _ObstructionIntensity);
+               float alpha = saturate(grid * _GridAlphaIntensity);
                
                clip(alpha - _AlphaClipThreshold);
 

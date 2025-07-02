@@ -93,7 +93,7 @@ Material:
     - _AddPrecomputedVelocity: 0
     - _Alpha: 1
     - _AlphaClip: 0
-    - _AlphaClipThreshold: 0.038751125
+    - _AlphaClipThreshold: 0
     - _AlphaToMask: 0
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
@@ -111,7 +111,8 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _GridPixelSize: 7.7
+    - _GridAlphaIntensity: 1.5
+    - _GridPixelSize: 3.8
     - _Metallic: 0
     - _ObstructionIntensity: 1
     - _OcclusionStrength: 1
