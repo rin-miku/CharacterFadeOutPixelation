@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46c952962d8fd8a4191ed7ee5077d95f, type: 3}
   m_Name: CharacterDissolveRendererFeature
   m_EditorClassIdentifier: 
-  m_Active: 0
+  m_Active: 1
   alphaBlendMaterial: {fileID: 2100000, guid: 259c57271d9453140a670077e779fd79, type: 2}
   maskMaterial: {fileID: 2100000, guid: b215648815ea20146a43a95db4aaba08, type: 2}
   pixelationMaterial: {fileID: 2100000, guid: acc0d42bf56be7a4999a92b4b2a278ee, type: 2}
@@ -82,7 +82,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dce890c47d1b9994a97dc83dc888b5a2, type: 3}
   m_Name: CharacterAlphaClipRendererFeature
   m_EditorClassIdentifier: 
-  m_Active: 1
+  m_Active: 0
   alphaClipMaterial: {fileID: 2100000, guid: 294af1fe7df70bd41940f1a3dedee414, type: 2}
 --- !u!114 &7833122117494664109
 MonoBehaviour:

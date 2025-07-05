@@ -93,7 +93,7 @@ Material:
     - _AddPrecomputedVelocity: 0
     - _Alpha: 1
     - _AlphaClip: 0
-    - _AlphaClipThreshold: 0
+    - _AlphaClipThreshold: -0.20000005
     - _AlphaToMask: 0
     - _Blend: 0
     - _BlendModePreserveSpecular: 1

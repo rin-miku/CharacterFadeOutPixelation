@@ -115,7 +115,7 @@ Material:
     - _ObstructionIntensity: 0.42
     - _OcclusionStrength: 1
     - _Parallax: 0.005
-    - _PixelSize: 11
+    - _PixelSize: 1
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _Smoothness: 0.5
