@@ -112,7 +112,7 @@ Material:
     - _Glossiness: 0
     - _GlossyReflections: 0
     - _GridAlphaIntensity: 1.5
-    - _GridPixelSize: 3.8
+    - _GridPixelSize: 3.5
     - _Metallic: 0
     - _ObstructionIntensity: 1
     - _OcclusionStrength: 1
